@@ -105,7 +105,7 @@
 
     #afficheur{
 
-      background-color: white;
+      background-color: lightblue;
       border-style: solid;
       border-width: 2px;
       border-color : #0066cc;
@@ -120,11 +120,9 @@
 
   <script type="text/javascript">
 
-    var couleurCases = 'gold'
+    var couleurCases = 'blue'
 
     var nbCases = 60;
-
-    var couleurClick = 'bleu'
 
     var casePlateau = "<div class = 'col-1 square text-center' onclick = 'elementClicked(this,couleurClick)'></div>";
 
@@ -137,19 +135,28 @@
       "bleu" : "rgb(0, 0, 255)",
       "jaune" : "rgb(255, 255, 0)",
       "noir" : "rgb(0, 0, 0)",
-      "orange" : "rgb(255, 165, 0)"
+      "orange" : "rgb(255, 165, 0)",
+      "gold" : "rgb(255,215,0)"
 
     };
 
-    var joueurs = ['bleu','rouge','vert','orange'];
+    var joueurs = ['gold','rouge','vert','orange','noir'];
+
+     var couleurClick = joueurs[0];
 
     var nbJoueurs = 2;
 
     var joueurActuel = 1;
 
-    var exemple = ['rouge','rouge','rouge','vert','vert','vert','bleu','bleu','bleu','jaune','jaune','jaune','rouge','rouge','rouge','vert','vert','vert','bleu','bleu','bleu','jaune','jaune','jaune','rouge','rouge','rouge','vert','vert','vert','bleu','bleu','bleu','jaune','jaune','jaune','rouge','rouge','rouge','vert','vert','vert','bleu','bleu','bleu','jaune','jaune','jaune','rouge','rouge','rouge','vert','vert','vert','bleu','bleu','bleu','jaune','jaune','jaune'];
+    var tableau = [];
 
-    $( document ).ready(function() {
+    for(var i = 0; i<nbCases; i++){
+
+      tableau.push(couleurCases);
+
+    }
+
+    $( document ).ready(function() {/*
 
       $('#boutonNbJoueurs').click(function(){
 
@@ -168,7 +175,10 @@
 
         },2000);
 
-      });
+      });*/
+
+          $("#renseignements").hide();
+          debutPartie();
 
 
     });
@@ -177,15 +187,15 @@
 
         ajoutElement(casePlateau,nbCases);
 
-        coloriser('.square',couleurCases);
+        ajoutID();
 
-        //afficherTableau(exemple);
+        afficherTableau(tableau);
 
         afficher(message,'black');
 
         setTimeout(function(){
 
-          afficher('tour du joueur 1', 'blue');
+          afficher('tour du joueur 1', joueurs[0]);
 
         }, 1000);
 
@@ -203,7 +213,7 @@
 
     function elementClicked(e,c){
 
-      if(couleurs[c] == couleur(e)){
+      if(couleurs[c] == couleur(e) || c == couleur(e)){
 
         coloriser(e,couleurCases);
 
@@ -211,7 +221,7 @@
 
       else{
 
-        coloriser(e,couleurs[c]);
+        coloriser(e,c);
 
       }
 
@@ -220,6 +230,8 @@
     }
 
     function coloriser(e,c){
+
+      c = couleurs[c] ? couleurs[c] : c;
 
       $(e).css('background-color', c);
 
@@ -235,7 +247,7 @@
 
       for(var i = 0; i<t.length && i<nbCases; i++){
 
-          coloriser(listeElements[i],couleurs[t[i]]);
+          coloriser(listeElements[i],t[i]);
 
       }
 
@@ -266,6 +278,18 @@
       couleurClick = joueurs[joueurActuel-1];
 
       afficher('tour du joueur ' + joueurActuel, couleurs[couleurClick]);
+
+    }
+
+    function ajoutID(){
+
+      var listeElements = $('.square');
+
+      for(var i = 0; i<listeElements.length; i++){
+
+        $(listeElements[i]).attr('id',i);
+
+      }
 
     }
 
