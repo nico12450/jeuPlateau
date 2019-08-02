@@ -22,6 +22,7 @@
 
       <h1 class = 'display-4'>Puissance 4</h1>
       <button onclick="carreRond();" id = "apparence">changer l'apparence de la grille</button>
+      <button onclick="effacer();" id = "apparence">effacer la grille</button>
 
     </div>
 
@@ -157,6 +158,7 @@
 
     var tableau = [];
 
+    //abstraction du plateau, la structure du tableau n'est pas encore utilisée
     for(var i = 0; i<nbCases; i++){
 
       tableau.push(couleurs[couleurCases]);
@@ -309,6 +311,19 @@
 
       $(".square").toggleClass("circle");
 
+    }
+
+    function effacer(){
+
+      coloriser('.square',couleurCases);
+
+      tableau = [];
+
+      for(var i = 0; i<nbCases; i++){
+
+        tableau.push(couleurs[couleurCases]);
+
+      }
 
     }
 
