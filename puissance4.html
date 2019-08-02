@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>Jeu de plateau</title>
+    <title>Puissance 4</title>
   </head>
   <body>
 
@@ -18,7 +18,7 @@
 
     <div class = 'jumbotron-fluid text-center pt-4 pb-4'>
 
-      <h1 class = 'display-4'>Jeu de plateau</h1>
+      <h1 class = 'display-4'>Puissance 4</h1>
 
     </div>
 
@@ -50,7 +50,7 @@
     body{
 
       height: 100%;
-      background-color: #7300e6;
+      background-color: lightblue;
 
     }
 
@@ -188,6 +188,16 @@
 
       if(couleur('#' + id) == couleurs[couleurCases] && id + nbCasesParCol < nbCases && couleur('#' + (id + nbCasesParCol)) == couleurs[couleurCases]){
 
+        $( e ).animate({
+
+          opacity: 0.4,
+
+        }, 20 ).delay(100).animate({
+
+          opacity: 1,
+
+        }, 50 );
+
         elementClicked($('#' + (id+nbCasesParCol)),c)
 
       }
@@ -278,8 +288,6 @@
       }
 
     }
-
-     
 
   </script>
 
