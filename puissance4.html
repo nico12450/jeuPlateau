@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Jeu de plateau</title>
+  </head>
+  <body>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <div class = 'jumbotron-fluid text-center pt-4 pb-4'>
+
+      <h1 class = 'display-4'>Jeu de plateau</h1>
+
+    </div>
+
+    <div class = 'container-fluid pb-5'>
+
+      <div class = 'row justify-content-center'>
+
+        <div class = 'col-12 text-center' id = 'afficheur'></div>
+
+        <!-- <div class = 'col-sm-0 col-md-3 col-lg-4 lBorder'></div> -->
+
+        <div class = 'col-auto'>
+
+          <div class = 'row' id = 'plateau'></div>
+
+        </div>
+
+        <!-- <div class = 'col-sm-12 col-md-3 col-lg-4 rBorder'></div> -->
+
+      </div>
+
+    </div>
+
+
+  </body>
+
+  <style type="text/css">
+
+    body{
+
+      height: 100%;
+      background-color: #7300e6;
+
+    }
+
+    .jumbotron-fluid{
+
+      background-color: #0000cc;
+      color: white;
+      font-family: "Arial Black", Gadget, sans-serif;
+      font-size: 30px;
+      letter-spacing: 3px;
+      word-spacing: 3px;
+      font-weight: 400;
+      text-decoration: none;
+      font-style: normal;
+      font-variant: small-caps;
+      text-transform: none;
+
+    }
+
+    .square{
+
+      font-size: 120px;
+      min-height: 120px;
+      border-style: solid;
+      border-width: 2px;
+      border-color : #0066cc;
+    }
+
+    .square:hover{
+      
+      filter: grayscale(30%);
+      cursor: pointer;
+
+    }
+
+    .clicked{
+
+      background-color: blue;
+
+    }
+
+    #afficheur{
+
+      background-color: lightblue;
+      border-style: solid;
+      border-width: 2px;
+      border-color : #0066cc;
+      font-family: "Arial Black", Gadget, sans-serif;
+      font-size: 20px;
+
+    }
+
+
+
+  </style>
+
+  <script type="text/javascript">
+
+    var couleurCases = 'bleu'
+
+    var nbCases = 60;
+
+    var nbCasesParCol = 12;
+
+    var casePlateau = "<div class = 'col-" + (12/nbCasesParCol) + " square text-center' onclick = 'elementClicked(this,couleurClick)'></div>";
+
+    var message = 'début de la partie';
+
+    var couleurs = {
+
+      "rouge" : "rgb(255, 0, 0)",
+      "vert" : "rgb(0, 255, 0)",
+      "bleu" : "rgb(0, 0, 255)",
+      "jaune" : "rgb(255, 255, 0)",
+      "noir" : "rgb(0, 0, 0)",
+      "orange" : "rgb(255, 165, 0)",
+      "gold" : "rgb(255,215,0)"
+
+    };
+
+    var joueurs = ['gold','rouge','vert','orange','noir'];
+
+     var couleurClick = joueurs[0];
+
+    var nbJoueurs = 2;
+
+    var joueurActuel = 1;
+
+    var tableau = [];
+
+    for(var i = 0; i<nbCases; i++){
+
+      tableau.push(couleurs[couleurCases]);
+
+    }
+
+    $( document ).ready(function() {
+
+      $("#renseignements").hide();
+      debutPartie();
+
+    });
+
+    function debutPartie(){
+
+        ajoutElement(casePlateau,nbCases);
+
+        ajoutID();
+
+        afficherTableau(tableau);
+
+        afficher(message,'black');
+
+        setTimeout(function(){
+
+          afficher('tour du joueur 1', joueurs[0]);
+
+        }, 1000);
+
+    }
+
+    function ajoutElement(e,n){
+
+      for(var i = 0; i<n; i++){
+
+        $('#plateau').append(e);
+
+      }
+
+    }
+
+    function elementClicked(e,c){
+
+      var id = parseInt($(e).attr('id'));
+
+      if(couleur('#' + id) == couleurs[couleurCases] && id + nbCasesParCol < nbCases && couleur('#' + (id + nbCasesParCol)) == couleurs[couleurCases]){
+
+        elementClicked($('#' + (id+nbCasesParCol)),c)
+
+      }
+
+      else{
+
+        if(couleur('#' + id) == couleurs[couleurCases]){
+
+          coloriser(e,c);
+          tourSuivant();
+
+        }
+
+      }
+
+    }
+
+    function coloriser(e,c){
+
+      c = couleurs[c] ? couleurs[c] : c;
+
+      if(typeof e == 'int'){
+
+        $('#' + e).css('background-color', c);
+
+      }
+
+      else{
+
+        $(e).css('background-color', c);
+
+      }
+
+    }
+
+    function couleur(e){
+      return $(e).css('background-color');
+    }
+
+    function afficherTableau(t){
+
+      var listeElements = $('.square');
+
+      for(var i = 0; i<t.length && i<nbCases; i++){
+
+          coloriser(listeElements[i],t[i]);
+
+      }
+
+    }
+
+    function afficher(texte,c){
+
+      $('#afficheur').css('color',c);
+
+      $('#afficheur').text(texte);
+
+    }
+
+    function tourSuivant(){
+
+      if(joueurActuel == nbJoueurs){
+
+        joueurActuel = 1;
+
+      }
+
+      else{
+
+        joueurActuel +=1;
+
+      }
+
+      couleurClick = joueurs[joueurActuel-1];
+
+      afficher('tour du joueur ' + joueurActuel, couleurs[couleurClick]);
+
+    }
+
+    function ajoutID(){
+
+      var listeElements = $('.square');
+
+      for(var i = 0; i<listeElements.length; i++){
+
+        $(listeElements[i]).attr('id',i);
+
+      }
+
+    }
+
+     
+
+  </script>
+
+</html>

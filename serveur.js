@@ -25,30 +25,11 @@ http.createServer(function(request, response) {
 	else{
 
 		response.writeHeader(200, {"Content-Type": "text/html"});
-        response.write(fichierHTML);
-        response.end(); 
+		response.write(fichierHTML);
+		response.end();
 
 	}
 
 
 }).listen(PORT);
 
-function tourSuivant(){
-
-  if(joueurActuel == nbJoueurs){
-
-    joueurActuel = 1;
-
-  }
-
-  else{
-
-    joueurActuel +=1;
-
-  }
-
-  couleurClick = joueurs[joueurActuel-1];
-
-  afficher('tour du joueur ' + joueurActuel, couleurs[couleurClick]);
-
-}
