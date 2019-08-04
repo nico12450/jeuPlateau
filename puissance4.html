@@ -8,6 +8,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
 
     <title>Puissance 4</title>
   </head>
@@ -161,7 +163,7 @@
     //abstraction du plateau, la structure du tableau n'est pas encore utilisée
     for(var i = 0; i<nbCases; i++){
 
-      tableau.push(couleurs[couleurCases]);
+      tableau.push(couleurCases);
 
     }
 
@@ -224,6 +226,8 @@
 
         if(couleur('#' + id) == couleurs[couleurCases]){
 
+          tableau[id] = c;
+          envoyerTableau();
           coloriser(e,c);
           tourSuivant();
 
@@ -261,7 +265,7 @@
 
       for(var i = 0; i<t.length && i<nbCases; i++){
 
-          coloriser(listeElements[i],t[i]);
+          coloriser(listeElements[i],couleurs[t[i]]);
 
       }
 
@@ -324,6 +328,28 @@
         tableau.push(couleurs[couleurCases]);
 
       }
+
+    }
+
+    function envoyerTableau(){
+
+      var tableauJSON = JSON.stringify(tableau);
+
+
+      $.ajax({
+
+        url: '/tableau',
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+
+        success: function (data) {
+            //console.log('success');
+        },
+
+        data: tableauJSON
+
+      });
 
     }
 
