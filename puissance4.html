@@ -87,7 +87,7 @@
     }
 
     .square:hover{
-      
+
       filter: grayscale(30%);
       cursor: pointer;
 
@@ -348,6 +348,28 @@
         },
 
         data: tableauJSON
+
+      });
+
+      setTimeout(getTableau,3000);
+
+    }
+
+    function getTableau(){
+
+      console.log('test');
+
+      $.ajax({
+
+        url:'/tableau',
+        type:'GET',
+        dataType:'json',
+        success:function(data){
+          tableau = JSON.parse(data);
+        },
+        error:function(err){
+          setTimeout(getTableau,1000);
+        }
 
       });
 

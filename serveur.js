@@ -9,6 +9,9 @@ const PORT=8080;
 
 var fichierHTML;
 
+var plateauUpdate = false;
+var tableau;
+
 fs.readFile('./puissance4.html', function (err, html) {
 
     if (err) throw err;
@@ -36,30 +39,66 @@ http.createServer(function(request, response) {
 			var body = '';
 
 		    request.on('data', chunk => {
+
 		        body += chunk.toString();
+
 		    });
 
 		    request.on('end', () => {
 
-		    	var donnees = parse(body);
+		    	tableau = parse(body);
 		    	//console.log(donnees);
+          plateauUpdate = true;
 
-		        var r = {
-	    			status  : 200,
-	    			success : 'Updated Successfully'
-				};
+	        var r = {
 
-		        response.end(JSON.stringify(r));
-		        
+      			status  : 200,
+      			success : 'Updated Successfully'
+
+			    };
+
+		      response.end(JSON.stringify(r));
+
 		    });
 
 		}
 
 		else{
 
-			response.writeHeader(200, {"Content-Type": "text/html"});
-			response.write(fichierHTML);
-			response.end();
+      if(adresse == '/tableau'){
+
+        response.writeHead(200, {"Content-Type": "application/json"});
+
+        if(plateauUpdate){
+
+          plateauUpdate = false;
+    			response.write(tableau);
+    			response.end();
+
+        }
+
+        else{
+
+          var r = {
+
+            status  : 500,
+            descriptif : 'tableau à jour'
+
+          };
+
+          response.end(JSON.stringify(r));
+
+        }
+
+      }
+
+      else{
+
+  			response.writeHeader(200, {"Content-Type": "text/html"});
+  			response.write(fichierHTML);
+  			response.end();
+
+      }
 
 		}
 
@@ -67,4 +106,3 @@ http.createServer(function(request, response) {
 
 
 }).listen(PORT);
-
