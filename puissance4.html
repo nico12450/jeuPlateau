@@ -361,31 +361,32 @@
 
     function getTableau(){
 
-      $.ajax({
+      if(!envoie){
 
-        url:'/tableau',
-        type:'GET',
-        dataType:'json',
-        success:function(data,text,xhr){
-          if(xhr.responseJSON.status == 400){
-            console.log('test');
-            if(!envoie){
+        $.ajax({
+
+          url:'/tableau',
+          type:'GET',
+          dataType:'json',
+          success:function(data,text,xhr){
+            if(xhr.responseJSON.status == 400){
               setTimeout(getTableau,1000);
             }
+            else{
+
+              tableau = data;
+              afficherTableau(tableau);
+              tourSuivant();
+
+            }
+          },
+          error:function(err){
+
           }
-          else{
 
-            tableau = data;
-            afficherTableau(tableau);
-            tourSuivant();
+        });
 
-          }
-        },
-        error:function(err){
-
-        }
-
-      });
+      }
 
     }
 

@@ -69,7 +69,6 @@ http.createServer(function(request, response) {
       if(adresse == '/tableau'){
 
         response.writeHead(200, {"Content-Type": "application/json"});
-        console.log(plateauUpdate);
         if(plateauUpdate){
 
           plateauUpdate = false;
