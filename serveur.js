@@ -46,7 +46,8 @@ http.createServer(function(request, response) {
 
 		    request.on('end', () => {
 
-		    	tableau = parse(body);
+		    	tableau = JSON.parse(body);
+          tableau = JSON.stringify(tableau);
 		    	//console.log(donnees);
           plateauUpdate = true;
 
@@ -68,7 +69,7 @@ http.createServer(function(request, response) {
       if(adresse == '/tableau'){
 
         response.writeHead(200, {"Content-Type": "application/json"});
-
+        console.log(plateauUpdate);
         if(plateauUpdate){
 
           plateauUpdate = false;
@@ -81,7 +82,7 @@ http.createServer(function(request, response) {
 
           var r = {
 
-            status  : 500,
+            status  : 400,
             descriptif : 'tableau à jour'
 
           };

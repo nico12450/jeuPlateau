@@ -160,7 +160,9 @@
 
     var tableau = [];
 
-    //abstraction du plateau, la structure du tableau n'est pas encore utilisée
+    var envoie = false;
+
+    //abstraction du plateau
     for(var i = 0; i<nbCases; i++){
 
       tableau.push(couleurCases);
@@ -169,7 +171,6 @@
 
     $( document ).ready(function() {
 
-      $("#renseignements").hide();
       debutPartie();
 
     });
@@ -189,6 +190,8 @@
           afficher('tour du joueur 1', joueurs[0]);
 
         }, 1000);
+
+        getTableau();
 
     }
 
@@ -344,35 +347,50 @@
         contentType: 'application/json',
 
         success: function (data) {
-            //console.log('success');
+          envoie = true;
         },
 
         data: tableauJSON
 
       });
 
-      //setTimeout(getTableau,3000);
+      setTimeout(getTableau,3000);
+      setTimeout(envoye,1500);
 
     }
 
     function getTableau(){
-
-      console.log('test');
 
       $.ajax({
 
         url:'/tableau',
         type:'GET',
         dataType:'json',
-        success:function(data){
-          tableau = JSON.parse(data);
+        success:function(data,text,xhr){
+          if(xhr.responseJSON.status == 400){
+            console.log('test');
+            if(!envoie){
+              setTimeout(getTableau,1000);
+            }
+          }
+          else{
+
+            tableau = data;
+            afficherTableau(tableau);
+            tourSuivant();
+
+          }
         },
         error:function(err){
-          setTimeout(getTableau,1000);
+
         }
 
       });
 
+    }
+
+    function envoye(){
+      envoie = false;
     }
 
   </script>
