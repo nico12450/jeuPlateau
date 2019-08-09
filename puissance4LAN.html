@@ -160,6 +160,8 @@
 
     var tableau = [];
 
+    var envoie = false;
+
     //abstraction du plateau
     for(var i = 0; i<nbCases; i++){
 
@@ -188,6 +190,8 @@
           afficher('tour du joueur 1', joueurs[0]);
 
         }, 1000);
+
+        getTableau();
 
     }
 
@@ -226,6 +230,7 @@
         if(couleur('#' + id) == couleurs[couleurCases]){
 
           tableau[id] = c;
+          envoyerTableau();
           coloriser(e,c);
           tourSuivant();
 
@@ -329,6 +334,65 @@
 
     }
 
+    function envoyerTableau(){
+
+      var tableauJSON = JSON.stringify(tableau);
+
+
+      $.ajax({
+
+        url: '/tableau',
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+
+        success: function (data) {
+          envoie = true;
+        },
+
+        data: tableauJSON
+
+      });
+
+      setTimeout(getTableau,3000);
+      setTimeout(envoye,1500);
+
+    }
+
+    function getTableau(){
+
+      if(!envoie){
+
+        $.ajax({
+
+          url:'/tableau',
+          type:'GET',
+          dataType:'json',
+          success:function(data,text,xhr){
+            if(xhr.responseJSON.status == 400){
+              setTimeout(getTableau,1000);
+            }
+            else{
+
+              tableau = data;
+              afficherTableau(tableau);
+              tourSuivant();
+
+            }
+          },
+          error:function(err){
+
+          }
+
+        });
+
+      }
+
+    }
+
+    function envoye(){
+      envoie = false;
+    }
 
   </script>
 
