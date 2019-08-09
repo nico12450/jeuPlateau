@@ -9,17 +9,15 @@ const PORT=8080;
 
 var fichierHTML;
 
-var plateauUpdate = false;
 var tableau;
 
-fs.readFile('./puissance4LAN.html', function (err, html) {
+fs.readFile('./puissance4LANMulti.html', function (err, html) {
 
     if (err) throw err;
 
     fichierHTML = html;
 
 });
-
 
 http.createServer(function(request, response) {
 
@@ -49,7 +47,6 @@ http.createServer(function(request, response) {
 		    	tableau = JSON.parse(body);
           tableau = JSON.stringify(tableau);
 		    	//console.log(donnees);
-          plateauUpdate = true;
 
 	        var r = {
 
@@ -69,26 +66,8 @@ http.createServer(function(request, response) {
       if(adresse == '/tableau'){
 
         response.writeHead(200, {"Content-Type": "application/json"});
-        if(plateauUpdate){
-
-          plateauUpdate = false;
-    			response.write(tableau);
-    			response.end();
-
-        }
-
-        else{
-
-          var r = {
-
-            status  : 400,
-            descriptif : 'tableau à jour'
-
-          };
-
-          response.end(JSON.stringify(r));
-
-        }
+    		response.write(tableau);
+    		response.end();
 
       }
 
