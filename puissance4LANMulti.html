@@ -25,6 +25,20 @@
       <h1 class = 'display-4'>Puissance 4</h1>
       <button onclick="carreRond();" id = "apparence">changer l'apparence de la grille</button>
       <button onclick="effacer();" id = "apparence">effacer la grille</button>
+      <div class="dropdown">
+
+        <button class="btn btn-primary btn-lg dropdown-toggle mr-1" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          nombre de joueurs
+        </button>
+
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#" onclick = "nbJoueurs = 2;">2</a>
+          <a class="dropdown-item" href="#" onclick = "nbJoueurs = 3;">3</a>
+          <a class="dropdown-item" href="#" onclick = "nbJoueurs = 4;">4</a>
+          <a class="dropdown-item" href="#" onclick = "nbJoueurs = 5;">5</a>
+        </div>
+
+      </div>
 
     </div>
 
@@ -348,7 +362,7 @@
 
       for(var i = 0; i<nbCases; i++){
 
-        tableau.push(couleurs[couleurCases]);
+        tableau.push(couleurCases);
 
       }
 
